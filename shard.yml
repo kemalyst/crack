@@ -1,0 +1,9 @@
+name: crack
+version: 0.1.0
+
+authors:
+  - Dru Jensen <drujensen@gmail.com>
+
+crystal: 0.22.0
+
+license: MIT
