@@ -24,11 +24,12 @@ require "crack"
 require "http/server"
 
 Crack::Handler::Logger.instance.config do |config|
-  config.logger = MyLogger.new()
+  config.logger = Logger.new(STDOUT)
 end
 
 Crack::Handler::Static.instance.config do |config|
   config.public_folder = "./public"
+  config.default_file = "index.html"
 end
 
 HTTP::Server.new("127.0.0.1", 8080, [
