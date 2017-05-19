@@ -23,23 +23,22 @@ Add the handler to your HTTP::Server implementation:
 require "crack"
 require "http/server"
 
-Crack::LogHandler.instance.config do |config|
+Crack::Handler::Logger.instance.config do |config|
   config.logger = MyLogger.new()
 end
 
-Crack::StaticFileHandler.instance.config do |config|
-  config.public_directory = "./public"
+Crack::Handler::Static.instance.config do |config|
+  config.public_folder = "./public"
 end
 
 HTTP::Server.new("127.0.0.1", 8080, [
-  Crack::ErrorHandler.instance,
-  Crack::LogHandler.instance,
-  Crack::CompressHandler.instance,
-  Crack::StaticFileHandler.instance,
+  Crack::Handler::Error.instance,
+  Crack::Handler::Logger.instance,
+  Crack::Handler::Static.instance,
 ]).listen
 ```
 
-You can add these to your `Kemal`, `Kemalyst` or any other framework that support `HTTP::Handlers` in their stack.
+You can add these to `Kemal` or any other framework that support `HTTP::Handlers` in their stack.
 
 ## Development
 
