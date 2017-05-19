@@ -10,8 +10,8 @@ module Crack::Handler
     AUTH_MESSAGE          = "Could not verify your access level for that URL.\nYou have to login with proper credentials"
     HEADER_LOGIN_REQUIRED = "Basic realm=\"Login Required\""
 
-    property username : String
-    property password : String
+    property username : String?
+    property password : String?
 
     def self.instance
       @@instance ||= new
