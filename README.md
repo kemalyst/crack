@@ -1,6 +1,9 @@
-# crack
+# Crack Middleware
 
-TODO: Write a description here
+Crack provides a set of common `HTTP::Handlers` that are similar to Rack Middleware.
+
+Each handler provides changes needed to the `HTTP::Server::Context` and the ability to configure
+the handler using a block that is yields to self for setting any properties.
 
 ## Installation
 
@@ -9,24 +12,48 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   crack:
-    github: [your-github-name]/crack
+    github: drujensen/crack
 ```
 
 ## Usage
 
+Add the handler to your HTTP::Server implementation:
+
 ```crystal
 require "crack"
+require "http/server"
+
+Crack::LogHandler.instance.config do |config|
+  config.logger = MyLogger.new()
+end
+
+Crack::StaticFileHandler.instance.config do |config|
+  config.public_directory = "./public"
+end
+
+HTTP::Server.new("127.0.0.1", 8080, [
+  Crack::ErrorHandler.instance,
+  Crack::LogHandler.instance,
+  Crack::CompressHandler.instance,
+  Crack::StaticFileHandler.instance,
+]).listen
 ```
 
-TODO: Write usage instructions here
+You can add these to your `Kemal`, `Kemalyst` or any other framework that support `HTTP::Handlers` in their stack.
 
 ## Development
 
-TODO: Write development instructions here
+If you want to add a handler to this library, please follow the pattern provided:
+  - Provide a singleton pattern with the `self.instance` method to instantiate
+  - Provide a `self.config()` and `config()` method that yields self to a block to set any properties needed
+  - If your handler requires logging, provide a `property logger : Logger` that can be configured in the config methods.  This should use the `Logger` base from the stdlib
+  - If your handler requires modifying the `HTTP::Server::Context`, do so at the top of the handler so its clear what additions are being made
+  - Document the purpose of the handler.  If there are other handlers that perform a similar task, provide the reason one might chose yours over the other
+  - Provide specs that cover the main functionality of your handler.
 
 ## Contributing
 
-1. Fork it ( https://github.com/[your-github-name]/crack/fork )
+1. Fork it ( https://github.com/drujensen/crack/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -34,4 +61,5 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [[your-github-name]](https://github.com/[your-github-name]) Dru Jensen - creator, maintainer
+- [drujensen](https://github.com/drujensen) Dru Jensen - creator, maintainer
+- [bigtunacan](https://github.com/bigtunacan) Joiey Seeley - contributor
