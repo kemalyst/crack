@@ -7,6 +7,11 @@ module Crack::Handler
   class Logger < Base
     property logger : Union(::Logger | Nil)
 
+    def self.instance(logger)
+      @@instance ||= new
+      @@instance.logger = logger
+    end
+
     def self.instance
       @@instance ||= new
     end
