@@ -8,12 +8,18 @@ module Crack::Handler
     property logger : Union(::Logger | Nil)
 
     def self.instance(logger)
-      @@instance ||= new
-      @@instance.logger = logger
+      @@instance ||= new(logger)
+    end
+
+    def initialize(logger)
+      @logger = logger
     end
 
     def self.instance
       @@instance ||= new
+    end
+
+    def initialize
     end
 
     def call(context)
