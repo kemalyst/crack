@@ -1,8 +1,7 @@
 module Crack::Handler
   # The CORS Handler adds support for Cross Origin Resource Sharing.
   class CORS < Base
-    property allow_origin, allow_headers, allow_methods, allow_credentials,
-      max_age
+    property allow_origin, allow_headers, allow_methods, allow_credentials, max_age
 
     # class method to return a singleton instance of this Controller
     def self.instance

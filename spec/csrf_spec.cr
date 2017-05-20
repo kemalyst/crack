@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe Crack::Handler::CSRF do
   context "methods" do
-    it "should allow GET requests" do
+    it "allows GET requests" do
       request = HTTP::Request.new("GET", "/")
       io, context = create_context(request)
       csrf = Crack::Handler::CSRF.instance
@@ -78,7 +78,7 @@ describe Crack::Handler::CSRF do
       csrf.call(context)
     end
 
-    it "rejects request when token matches" do
+    it "rejects request when token does not match" do
       request = HTTP::Request.new("PUT", "/")
       io, context = create_context(request)
       context.session["csrf.token"] = "test"
@@ -102,7 +102,7 @@ describe Crack::Handler::CSRF do
       csrf.call(context)
     end
 
-    it "rejects request when token matches" do
+    it "rejects request when token does not match" do
       request = HTTP::Request.new("PUT", "/")
       io, context = create_context(request)
       context.session["csrf.token"] = "test"

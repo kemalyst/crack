@@ -1,6 +1,47 @@
 require "./spec_helper"
 
 describe Crack::Handler::BasicAuth do
+  it "successful if username and password match" do
+    Crack::Handler::BasicAuth.instance.config do |config|
+      config.username = "username"
+      config.password = "password"
+    end
+    
+    request = HTTP::Request.new("GET", "/")
+    request.headers["Authorization"] = "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
+    io, context = create_context(request)
+    basicauth = Crack::Handler::BasicAuth.instance
+    basicauth.call(context)
+    expect(context.response.status_code).to eq 404
+  end
+
+  it "allows setting username and password in instance method" do
+    request = HTTP::Request.new("GET", "/")
+    request.headers["Authorization"] = "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
+    io, context = create_context(request)
+    basicauth = Crack::Handler::BasicAuth.instance("username", "password")
+    basicauth.call(context)
+    expect(context.response.status_code).to eq 404
+  end
+
+  it "returns 401 if username and password do not match" do
+    request = HTTP::Request.new("GET", "/")
+    request.headers["Authorization"] = "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
+    io, context = create_context(request)
+    basicauth = Crack::Handler::BasicAuth.instance("wrongusername", "doesnotmatch")
+    basicauth.call(context)
+    expect(context.response.status_code).to eq 404
+  end
+
+  it "returns 401 if username and password are not set" do
+    request = HTTP::Request.new("GET", "/")
+    request.headers["Authorization"] = "Basic YmFkOnVzZXI="
+    io, context = create_context(request)
+    basicauth = Crack::Handler::BasicAuth.instance
+    basicauth.call(context)
+    expect(context.response.status_code).to eq 401
+  end
+
   it "returns 401 if no Authorization Header" do
     request = HTTP::Request.new("GET", "/")
     io, context = create_context(request)
@@ -16,28 +57,5 @@ describe Crack::Handler::BasicAuth do
     basicauth = Crack::Handler::BasicAuth.instance
     basicauth.call(context)
     expect(context.response.status_code).to eq 401
-  end
-
-  it "returns 401 if bad:user" do
-    request = HTTP::Request.new("GET", "/")
-    request.headers["Authorization"] = "Basic YmFkOnVzZXI="
-    io, context = create_context(request)
-    basicauth = Crack::Handler::BasicAuth.instance
-    basicauth.call(context)
-    expect(context.response.status_code).to eq 401
-  end
-
-  it "continues if username:password" do
-    Crack::Handler::BasicAuth.instance.config do |config|
-      config.username = "username"
-      config.password = "password"
-    end
-    
-    request = HTTP::Request.new("GET", "/")
-    request.headers["Authorization"] = "Basic dXNlcm5hbWU6cGFzc3dvcmQ="
-    io, context = create_context(request)
-    basicauth = Crack::Handler::BasicAuth.instance
-    basicauth.call(context)
-    expect(context.response.status_code).to eq 404
   end
 end

@@ -13,8 +13,18 @@ module Crack::Handler
     property username : String?
     property password : String?
 
+    def self.instance(username, password)
+      @@instance ||= new(username, password)
+    end
+
     def self.instance
       @@instance ||= new
+    end
+
+    def initialize
+    end
+
+    def initialize(@username, @password)
     end
 
     def call(context)
