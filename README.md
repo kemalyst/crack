@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   crack:
-    github: drujensen/crack
+    github: kemalyst/crack
 ```
 
 ## Usage
