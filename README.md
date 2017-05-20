@@ -53,7 +53,7 @@ If you want to add a handler to this library, please follow the pattern provided
 
 ## Contributing
 
-1. Fork it ( https://github.com/drujensen/crack/fork )
+1. Fork it ( https://github.com/kemalyst/crack/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
