@@ -1,7 +1,6 @@
 module Crack::Handler
-  # The Error Handler catches RouteNotFound and returns a 404.  It will
-  # response based on the `Accepts` header as JSON or HTML.  It also catches
-  # any runtime Exceptions and returns a backtrace in text/plain format.
+  # The Error Handler catches any unhandled exceptions and returns a 500 with
+  # a backtrace in text/plain format.
   class Error < Base
     # class method to return a singleton instance of this Controller
     def self.instance

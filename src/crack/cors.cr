@@ -1,5 +1,6 @@
 module Crack::Handler
   # The CORS Handler adds support for Cross Origin Resource Sharing.
+  # WIP
   class CORS < Base
     property allow_origin, allow_headers, allow_methods, allow_credentials, max_age
 
