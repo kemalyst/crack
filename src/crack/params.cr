@@ -1,5 +1,4 @@
 require "json"
-require "tempfile"
 
 # Open Context and add `params` and `files` hash.
 class HTTP::Server::Context
@@ -26,7 +25,7 @@ class HTTP::Server::Context
 end
 
 struct FileUpload
-  getter tmpfile : Tempfile
+  getter tmpfile : File
   getter filename : String?
   getter headers : HTTP::Headers
   getter creation_time : Time?
@@ -35,7 +34,7 @@ struct FileUpload
   getter size : UInt64?
 
   def initialize(upload)
-    @tmpfile = Tempfile.new(filename)
+    @tmpfile = File.tempfile(filename)
     ::File.open(@tmpfile.path, "w") do |file|
       IO.copy(upload.body, file)
     end

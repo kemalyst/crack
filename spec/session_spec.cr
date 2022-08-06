@@ -16,7 +16,7 @@ describe Crack::Handler::Session do
     context.session["authorized"] = "true"
     session.call(context)
     cookie = context.response.headers["set-cookie"]
-    expect(cookie).to eq "crack.session=6f9654b549f1e60103fc4e9bc34bc7f85d4f290a--eyJhdXRob3JpemVkIjoidHJ1ZSJ9%0A; path=/"
+    expect(cookie).to eq "crack.session=3e7ed013efb3fde48e16687d048498842fa84df4--eyJhdXRob3JpemVkIjoidHJ1ZSJ9"
   end
 
   it "uses a secret" do
@@ -27,7 +27,7 @@ describe Crack::Handler::Session do
     context.session["authorized"] = "true"
     session.call(context)
     cookie = context.response.headers["set-cookie"]
-    expect(cookie).to eq "crack.session=d5374f304c4a343e14fca421e4c372c777207337--eyJhdXRob3JpemVkIjoidHJ1ZSJ9%0A; path=/"
+    expect(cookie).to eq "crack.session=2b4e0cbc9209bf2b432fa669a7219776d6066858--eyJhdXRob3JpemVkIjoidHJ1ZSJ9"
   end
 
   context "context" do

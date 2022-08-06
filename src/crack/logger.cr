@@ -1,20 +1,10 @@
-require "logger"
+require "log"
 
 module Crack::Handler
   # The Logger handler logs every request/response to the provided logger.
   # The logger can be configured as STDIN/STDOUT or as a log file.  A custom
   # logger can be configured and passed in as well.
   class Logger < Base
-    property logger : Union(::Logger | Nil)
-
-    def self.instance(logger)
-      @@instance ||= new(logger)
-    end
-
-    def initialize(logger)
-      @logger = logger
-    end
-
     def self.instance
       @@instance ||= new
     end
@@ -23,19 +13,17 @@ module Crack::Handler
     end
 
     def call(context)
-      time = Time.now
+      time = Time.local
       call_next(context)
 
       status_code = context.response.status_code
       method = context.request.method
       resource = context.request.resource
-      elapsed = elapsed_text(Time.now - time)
+      elapsed = elapsed_text(Time.local - time)
 
       output_message = "#{status_code} | #{method} #{resource} | #{elapsed}"
 
-      unless logger.nil?
-        logger.not_nil!.info output_message
-      end
+      Log.info { output_message }
 
       context
     end

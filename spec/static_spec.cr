@@ -22,7 +22,7 @@ describe Crack::Handler::Static do
     context.response.close
     io.rewind
     client_response = HTTP::Client::Response.from_io(io, decompress: false)
-    expect(client_response.body).to eq "Not Found\n"
+    expect(client_response.body).to eq "404 Not Found\n"
   end
 
   it "delivers index.html if path ends with /" do

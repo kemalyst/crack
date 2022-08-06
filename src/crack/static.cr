@@ -24,13 +24,13 @@ module Crack::Handler
       end
 
       public_dir = File.expand_path(@public_folder)
-      request_path = URI.unescape(context.request.path.not_nil!)
+      request_path = URI.decode(context.request.path.not_nil!)
       expanded_path = File.expand_path(request_path, "/")
       file_path = File.join(public_dir, expanded_path)
       file_path = File.join(public_dir, default_file) if file_path.ends_with? "/"
 
       if File.exists?(file_path)
-        last_modified = File.stat(file_path).mtime.to_s("%a, %-d %h %C%y %T GMT")
+        last_modified = File.info(file_path).modification_time.to_s("%a, %-d %h %C%y %T GMT")
         if modified_since = context.request.headers.fetch("If-Modified-Since", nil)
           if last_modified == modified_since
             context.response.status_code = 304

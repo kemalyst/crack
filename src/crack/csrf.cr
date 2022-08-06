@@ -1,8 +1,8 @@
-require "secure_random"
+require "base64"
 
 module Crack::Handler
   # The CSRF Handler adds support for Cross Site Request Forgery.
-  # DEPENDENT: Session and Params Handlers.  
+  # DEPENDENT: Session and Params Handlers.
   class CSRF < Base
     property session_key, header_key, param_key, check_methods
 
@@ -36,7 +36,7 @@ module Crack::Handler
     end
 
     def token(context)
-      context.session[session_key] ||= SecureRandom.urlsafe_base64(32)
+      context.session[session_key] ||= Random.new.base64(32)
     end
 
     def tag(context)
